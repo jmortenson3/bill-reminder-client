@@ -2,6 +2,7 @@
   <div class="bill-list">
     <h1>Bills</h1>
     <div v-if="bills.length">
+      <p>Your total monthly bill amount is ${{ this.billTotal }}</p>
       <table class="table">
         <thead>
           <tr>
@@ -20,14 +21,13 @@
           <td>
             {{ bill.title }}
           </td>
-          <td>{{ bill.amount }}</td>
-          <td>{{ bill.dueDate }}</td>
+          <td>{{ bill.amount ? '$' + parseFloat(bill.amount).toFixed(2) : null }}</td>
+          <td>{{ bill.dueDate.split('T')[0] }}</td>
           <td>{{ bill.paid }}</td>
           <td>{{ bill._id }}</td>
           <td><button v-on:click="deleteBill(bill._id)">X</button></td>
         </tr>
       </table>
-      <p>Your total monthly bill amount is ${{ this.billTotal }}</p>
     </div>
     <div v-else>
       <p>No bills to display.</p>
@@ -71,7 +71,7 @@ export default {
 <style scoped>
 .table {
   margin: 0 auto;
-  width: 60%;
+  width: 75%;
 }
 
 .table thead tr {
