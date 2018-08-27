@@ -2,28 +2,34 @@
   <div class="form">
     <h1>Add a bill</h1>
     <form method="post" @submit.prevent="submitForm">
-      <label for="">Bill name</label>
-      <input type="text" v-model="title">
-      <label for="">Amount</label>
-      <input type="text" v-model="amount">
+      <label for="title">Bill name</label>
+      <input type="text" v-model="title" id="title">
+      <label for="amount">Amount</label>
+      <input type="text" v-model="amount" id="amount">
+      <label for="payAtUrl">URL to pay at</label>
+      <input type="text" v-model="payAtUrl" id="payAtUrl">
       <label for="dueDateUOM">My bill is due every...</label>
-      <select name="dueDateUOM" id="" v-model="dueEvery">
+      <select name="dueDateUOM" id="dueDateUOM" v-model="dueEvery">
         <option value="">--Due every...--</option>
         <option v-for="uom in UOMs" v-bind:key="uom" v-bind:value="uom.value">{{ uom.text }}</option>
       </select>
       <div v-if="['week', 'bi-week'].includes(dueEvery)">
         <label for="dueDateFrequency">...on...</label>
-        <select name="dueDateFrequency" id="" v-model="dueOn">
+        <select name="dueDateFrequency" id="dueDateFrequency" v-model="dueOn">
           <option value="">--select day of week--</option>
           <option v-for="day in weekDays" v-bind:key="day" v-bind:value="day">{{ day }}</option>
         </select>
       </div>
       <div v-if="['month', 'bi-month', 'tri-month', 'bi-anual', 'anual'].includes(dueEvery)">
         <label for="dueDateFrequency">...on the...</label>
-        <select name="dueDateFrequency" id="" v-model="dueOn">
+        <select name="dueDateFrequency" id="dueDateFrequency" v-model="dueOn">
           <option value="">--select day--</option>
           <option v-for="n in 31" v-bind:key="n" v-bind:value="n">{{ formatDate(n) }}</option>
         </select>
+      </div>
+      <div v-if="dueOn">
+        <label for="nextDueDate">Select your next due date</label>
+        <input type="date" id="nextDueDate" v-model="firstDueDate">
       </div>
       <button type="submit">Add Bill</button>
     </form>
@@ -41,6 +47,7 @@ export default {
       payAtUrl: '',
       dueEvery: '',
       dueOn: '',
+      firstDueDate: '',
       weekDays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
       UOMs: [
         { text: 'day', value: 'day' },
@@ -62,7 +69,8 @@ export default {
         amount: this.amount,
         payAtUrl: this.payAtUrl,
         dueEvery: this.dueEvery,
-        dueOn: this.dueOn
+        dueOn: this.dueOn,
+        firstDueDate: this.firstDueDate
       }
       axios
         .post('http://localhost:3001/api/b',

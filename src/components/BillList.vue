@@ -22,7 +22,7 @@
             {{ bill.title }}
           </td>
           <td>{{ bill.amount ? '$' + parseFloat(bill.amount).toFixed(2) : null }}</td>
-          <td>{{ bill.dueDate.split('T')[0] }}</td>
+          <td>{{ bill.firstDueDate }}</td>
           <td>{{ bill.paid }}</td>
           <td>{{ bill._id }}</td>
           <td><button v-on:click="deleteBill(bill._id)">X</button></td>
@@ -49,6 +49,7 @@ export default {
     axios
       .get('http://localhost:3001/api/b')
       .then(response => {
+        console.log(response);
         this.bills = response.data;
         this.billTotal = this.bills.map(bill => bill.amount).reduce((a, c) => a + c);
       })
