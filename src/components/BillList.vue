@@ -13,17 +13,11 @@
             <td>ID</td>
           </tr>
         </thead>
-        <tr
-          v-for="bill in bills"
-          :key="bill._id"
-          :bill="bill"
-        >
-          <td>
-            {{ bill.title }}
-          </td>
+        <tr v-for="bill in bills" :key="bill._id" :bill="bill" >
+          <td>{{ bill.title }}</td>
           <td>{{ bill.amount ? '$' + parseFloat(bill.amount).toFixed(2) : null }}</td>
           <td>{{ bill.firstDueDate }}</td>
-          <td>{{ bill.paid }}</td>
+          <td v-on:click="markAsPaid(bill._id)"><img class="icon-dollar" widht="25" v-if="bill.paid" src="/static/dollar_green.png"><img v-else width="25" src="/static/dollar_red.png"></td>
           <td>{{ bill._id }}</td>
           <td><button v-on:click="deleteBill(bill._id)">X</button></td>
         </tr>
@@ -55,6 +49,9 @@ export default {
       })
       .catch(err => err);
   },
+  beforeUpdate() {
+    this.billTotal = this.bills.map(bill => bill.amount).reduce((a, c) => a + c);
+  },
   methods: {
     deleteBill: function(id) {
       console.log(`Deleting bill with id ${id}`);
@@ -62,6 +59,25 @@ export default {
         .delete(`http://localhost:3001/api/b/${id}`)
         .then(res => {
           this.bills = this.bills.filter(bill => bill._id !== id);
+          return res;
+        })
+        .catch(err => err);
+    },
+    markAsPaid: function(id) {
+      let billToUpdate = this.bills.filter(bill => bill._id === id )[0];
+      console.log(`Marking bill ${id} as paid: ${!billToUpdate.paid}`);
+      const body = {
+        paid: !billToUpdate.paid
+      }
+      axios
+        .put(`http://localhost:3001/api/b/${id}`,
+          body
+        )
+        .then(res => {
+          console.log(res);
+          billToUpdate.paid = !billToUpdate.paid;
+          const index = this.bills.map(el => el._id).indexOf(id);
+          this.bills[index] = billToUpdate;
           return res;
         })
         .catch(err => err);
@@ -81,5 +97,9 @@ export default {
 
 .table tr:nth-child(2n) {
   background-color: #f5f5f5;
+}
+
+.icon-dollar {
+  width: 25px;
 }
 </style>
