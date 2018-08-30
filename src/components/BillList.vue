@@ -16,8 +16,11 @@
         <tr v-for="bill in bills" :key="bill._id" :bill="bill" >
           <td>{{ bill.title }}</td>
           <td>{{ bill.amount ? '$' + parseFloat(bill.amount).toFixed(2) : null }}</td>
-          <td>{{ bill.firstDueDate }}</td>
-          <td v-on:click="markAsPaid(bill._id)"><img class="icon-dollar" widht="25" v-if="bill.paid" src="/static/dollar_green.png"><img v-else width="25" src="/static/dollar_red.png"></td>
+          <td>{{ bill.nextDueDate }}</td>
+          <td v-on:click="markAsPaid(bill._id)">
+            <div v-if="bill.paid">Paid <img class="icon-dollar" widht="25" src="/static/dollar_green.png"></div>
+            <div v-else>Not paid <img width="25" src="/static/dollar_red.png"></div>
+          </td>
           <td>{{ bill._id }}</td>
           <td><button v-on:click="deleteBill(bill._id)">X</button></td>
         </tr>

@@ -11,23 +11,9 @@
       <label for="dueDateUOM">My bill is due every...</label>
       <select name="dueDateUOM" id="dueDateUOM" v-model="dueEvery">
         <option value="">--Due every...--</option>
-        <option v-for="uom in UOMs" v-bind:key="uom" v-bind:value="uom.value">{{ uom.text }}</option>
+        <option v-for="uom in UOMs" v-bind:key="uom.value" v-bind:value="uom.value">{{ uom.text }}</option>
       </select>
-      <div v-if="['week', 'bi-week'].includes(dueEvery)">
-        <label for="dueDateFrequency">...on...</label>
-        <select name="dueDateFrequency" id="dueDateFrequency" v-model="dueOn">
-          <option value="">--select day of week--</option>
-          <option v-for="day in weekDays" v-bind:key="day" v-bind:value="day">{{ day }}</option>
-        </select>
-      </div>
-      <div v-if="['month', 'bi-month', 'tri-month', 'bi-anual', 'anual'].includes(dueEvery)">
-        <label for="dueDateFrequency">...on the...</label>
-        <select name="dueDateFrequency" id="dueDateFrequency" v-model="dueOn">
-          <option value="">--select day--</option>
-          <option v-for="n in 31" v-bind:key="n" v-bind:value="n">{{ formatDate(n) }}</option>
-        </select>
-      </div>
-      <div v-if="dueOn">
+      <div>
         <label for="nextDueDate">Select your next due date</label>
         <input type="date" id="nextDueDate" v-model="firstDueDate">
       </div>
@@ -56,8 +42,8 @@ export default {
         { text: 'month', value: 'month' },
         { text: 'other month', value: 'bi-month' },
         { text: '3 months', value: 'tri-month' },
-        { text: '6 months', value: 'bi-anual' },
-        { text: 'year', value: 'anual' }
+        { text: '6 months', value: 'bi-year' },
+        { text: 'year', value: 'year' }
       ]
     }
   },
@@ -69,15 +55,23 @@ export default {
         amount: this.amount,
         payAtUrl: this.payAtUrl,
         dueEvery: this.dueEvery,
-        dueOn: this.dueOn,
         firstDueDate: this.firstDueDate
       }
       axios
         .post('http://localhost:3001/api/b',
           body
         )
-        .then(function(res) { console.log(res)})
-        .catch(function(err) { console.log(err)});
+        .then(res => {
+          console.log(res);
+          console.log("Going back to bills...");
+          this.goToBillList();
+        })
+        .catch(err => {
+          console.log(err);
+          console.log("Going back to bills...");
+          this.goToBillList();
+        });
+
     },
     formatDate: function(n) {
       let s = n.toString();
@@ -95,6 +89,9 @@ export default {
           s += 'th';
       }
       return s;
+    },
+    goToBillList: function() {
+      this.$router.push('/bills');
     }
   }
 }
