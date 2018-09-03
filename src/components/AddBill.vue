@@ -32,9 +32,7 @@ export default {
       amount: '',
       payAtUrl: '',
       dueEvery: '',
-      dueOn: '',
       firstDueDate: '',
-      weekDays: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
       UOMs: [
         { text: 'day', value: 'day' },
         { text: 'week', value: 'week' },

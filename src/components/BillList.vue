@@ -5,11 +5,11 @@
       <p>Your total monthly bill amount is ${{ this.billTotal }}</p>
       <table class="table">
         <thead>
-          <tr>
-            <td>Title</td>
-            <td>Amount</td>
-            <td>Due Date</td>
-            <td>Paid</td>
+          <tr class="table table-head">
+            <td v-on:click="clickSort('title')">Title</td>
+            <td v-on:click="clickSort('amount')">Amount</td>
+            <td v-on:click="clickSort('nextDueDate')">Due Date</td>
+            <td v-on:click="clickSort('paid')">Paid</td>
             <td>ID</td>
           </tr>
         </thead>
@@ -39,6 +39,7 @@ export default {
   data () {
     return {
       bills: [],
+      ascending: true,
       billTotal: 0
     }
   },
@@ -84,6 +85,27 @@ export default {
           return res;
         })
         .catch(err => err);
+    },
+    clickSort: function(field) {
+      const that = this;
+      this.bills.sort(function(a, b) {
+        a[field] = a[field] || false;
+        b[field] = b[field] || false;
+        const x = ['string', 'boolean'].includes(typeof a[field])
+                ? a[field].toString().toLowerCase()
+                : a[field];
+        const y = ['string', 'boolean'].includes(typeof b[field])
+                ? b[field].toString().toLowerCase()
+                : b[field];
+        if (x < y) {
+          return that.ascending ? -1: 1;
+        }
+        if (x > y) {
+          return that.ascending ? 1 : -1;
+        }
+        return 0;
+      });
+      this.ascending = !this.ascending;
     }
   }
 }
@@ -96,6 +118,10 @@ export default {
 
 .table thead tr {
   font-weight: bold;
+}
+
+.table thead tr:hover {
+  cursor: pointer;
 }
 
 .table tr:nth-child(2n) {
