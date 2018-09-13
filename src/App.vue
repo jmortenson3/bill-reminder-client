@@ -6,12 +6,17 @@
       <router-link to="/add-bill">Add Bill</router-link>
     </nav>
     <router-view/>
+    <login>
   </div>
 </template>
 
 <script>
+import Login from './components/Login';
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    'login': Login
+  }
 }
 </script>
 
