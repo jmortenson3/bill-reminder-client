@@ -24,6 +24,7 @@
 
 <script>
 import axios from 'axios';
+import { billService } from '../services/bill';
 
 export default {
   data() {
@@ -55,18 +56,11 @@ export default {
         dueEvery: this.dueEvery,
         firstDueDate: this.firstDueDate
       }
-      axios
-        .post('http://localhost:3001/api/b',
-          body
-        )
+      billService.createBill(body)
         .then(res => {
-          console.log(res);
-          console.log("Going back to bills...");
           this.goToBillList();
         })
         .catch(err => {
-          console.log(err);
-          console.log("Going back to bills...");
           this.goToBillList();
         });
 

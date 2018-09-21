@@ -34,6 +34,7 @@
 
 <script>
 import axios from 'axios';
+import { billService } from '../services/bill';
 
 export default {
   data () {
@@ -44,23 +45,24 @@ export default {
     }
   },
   mounted() {
-    axios
-      .get('http://localhost:3001/api/b')
+    billService.getBills()
       .then(response => {
-        console.log(response);
         this.bills = response.data;
-        this.billTotal = this.bills.map(bill => bill.amount).reduce((a, c) => a + c);
+        this.billTotal = this.bills.length > 0
+                ? this.bills.map(bill => bill.amount).reduce((a, c) => a + c)
+                : 0;
       })
-      .catch(err => err);
+      .catch(err => console.log(err).data);
   },
   beforeUpdate() {
-    this.billTotal = this.bills.map(bill => bill.amount).reduce((a, c) => a + c);
+    this.billTotal = this.bills.length > 0
+            ? this.bills.map(bill => bill.amount).reduce((a, c) => a + c)
+            : 0;
   },
   methods: {
     deleteBill: function(id) {
-      console.log(`Deleting bill with id ${id}`);
-      axios
-        .delete(`http://localhost:3001/api/b/${id}`)
+      console.log(`Deleting bill with id ${id}`.data);
+      billService.deleteBill(id)
         .then(res => {
           this.bills = this.bills.filter(bill => bill._id !== id);
           return res;
@@ -69,16 +71,12 @@ export default {
     },
     markAsPaid: function(id) {
       let billToUpdate = this.bills.filter(bill => bill._id === id )[0];
-      console.log(`Marking bill ${id} as paid: ${!billToUpdate.paid}`);
+      console.log(`Marking bill ${id} as paid: ${!billToUpdate.paid}`.data);
       const body = {
         paid: !billToUpdate.paid
       }
-      axios
-        .put(`http://localhost:3001/api/b/${id}`,
-          body
-        )
+      billService.updateBill(id, body)
         .then(res => {
-          console.log(res);
           billToUpdate.paid = !billToUpdate.paid;
           const index = this.bills.map(el => el._id).indexOf(id);
           this.bills[index] = billToUpdate;

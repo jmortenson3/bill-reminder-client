@@ -1,23 +1,30 @@
 <template>
   <div id="app">
     <nav>
-      <router-link to="/">Home</router-link>
-      <router-link to="/bills">List View</router-link>
-      <router-link to="/add-bill">Add Bill</router-link>
+      <div v-if="user.token">
+        <router-link to="/login">Logout</router-link>
+        <router-link to="/bills">List View</router-link>
+        <router-link to="/add-bill">Add Bill</router-link>
+      </div>
     </nav>
     <router-view/>
-    <login>
   </div>
 </template>
 
 <script>
-import Login from './components/Login';
+import { mapGetters } from 'vuex';
+
 export default {
-  name: 'App',
-  components: {
-    'login': Login
+  name: 'app',
+  computed: {
+    ...mapGetters({
+      user: 'authentication/getUser'
+    })
+  },
+  mounted() {
   }
 }
+
 </script>
 
 <style>
