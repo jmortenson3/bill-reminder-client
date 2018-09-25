@@ -1,14 +1,16 @@
 <template>
-  <div class="login">
+  <div class="register">
     <div v-if="status.loginFailed" class="errorBox">
-      <p>Username or password were not correct</p>
+      <p>{{ errorMessage }}</p>
     </div>
-    <form class="form" @submit.prevent="login" v-bind:class="{ formBorder: showBorder }">
-      <label for="username">Username/email:</label>
+    <form class="form" @submit.prevent="register" v-bind:class="{ formBorder: showBorder }">
+      <label for="username">Username/email</label>
       <input required v-model="username" type="text">
       <label for="password">Password</label>
       <input required v-model="password" type="password">
-      <button type="submit">Login</button>
+      <label for="re-password">Confirm password</label>
+      <input required v-model="rePassword" type="password">
+      <button type="submit">Sign up</button>
     </form>
   </div>
 </template>
@@ -17,12 +19,13 @@
 import { mapGetters, mapState } from 'vuex';
 
 export default {
-  name: 'login',
+  name: 'register',
   props: ['showBorder'],
   data() {
     return {
       username: '',
-      password: ''
+      password: '',
+      rePassword: ''
     }
   },
   computed: {
@@ -34,9 +37,9 @@ export default {
     this.$store.dispatch('authentication/logout');
   },
   methods: {
-    login: function() {
+    register: function() {
       const { username, password } = this;
-      this.$store.dispatch('authentication/login', { username, password });
+      this.$store.dispatch('authentication/register', { username, password });
     }
   }
 }
@@ -92,6 +95,6 @@ form label {
 }
 
 .formBorder {
-  border: 5px solid blueviolet;
+  border: 5px solid crimson;
 }
 </style>

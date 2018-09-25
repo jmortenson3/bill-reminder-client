@@ -1,6 +1,8 @@
 <template>
   <div class="form">
-    <h1>Add a bill</h1>
+    <!-- add or edit bill -->
+    <h1 v-if="bill">Edit a bill</h1>
+    <h1 v-else>Add a bill</h1>
     <form method="post" @submit.prevent="submitForm">
       <label for="title">Bill name</label>
       <input type="text" v-model="title" id="title">
@@ -11,7 +13,9 @@
       <label for="dueDateUOM">My bill is due every...</label>
       <select name="dueDateUOM" id="dueDateUOM" v-model="dueEvery">
         <option value="">--Due every...--</option>
-        <option v-for="uom in UOMs" v-bind:key="uom.value" v-bind:value="uom.value">{{ uom.text }}</option>
+        <option v-for="uom in UOMs" v-bind:key="uom.value" v-bind:value="uom.value">
+          {{ uom.text }}
+        </option>
       </select>
       <div>
         <label for="nextDueDate">Select your next due date</label>
@@ -27,13 +31,15 @@ import axios from 'axios';
 import { billService } from '../services/bill';
 
 export default {
+  props: ['bill'],
   data() {
+    console.log(JSON.stringify(this.bill));
     return {
-      title: '',
-      amount: '',
-      payAtUrl: '',
-      dueEvery: '',
-      firstDueDate: '',
+      title: this.bill ? this.bill.title : '',
+      amount: this.bill ? this.bill.amount : '',
+      payAtUrl: this.bill ? this.bill.payAtUrl : '',
+      dueEvery: this.bill ? this.bill.dueEvery : '',
+      firstDueDate: this.bill ? this.bill.firstDueDate : '',
       UOMs: [
         { text: 'day', value: 'day' },
         { text: 'week', value: 'week' },
@@ -48,7 +54,6 @@ export default {
   },
   methods: {
     submitForm: function() {
-      //console.log(this.billTitle + " is due on " + this.dueDate + " for $" + this.amount);
       const body = {
         title: this.title,
         amount: this.amount,
@@ -56,14 +61,24 @@ export default {
         dueEvery: this.dueEvery,
         firstDueDate: this.firstDueDate
       }
-      billService.createBill(body)
-        .then(res => {
-          this.goToBillList();
-        })
-        .catch(err => {
-          this.goToBillList();
-        });
-
+      if (this.bill) {
+        // update bill
+        billService.updateBill(this.bill._id, body)
+          .then(res => {
+            this.goToBillList();
+          })
+          .catch(err => {
+            this.goToBillList();
+          });
+      } else {
+        billService.createBill(body)
+          .then(res => {
+            this.goToBillList();
+          })
+          .catch(err => {
+            this.goToBillList();
+          });
+      }
     },
     formatDate: function(n) {
       let s = n.toString();
@@ -88,7 +103,6 @@ export default {
   }
 }
 </script>
-
 
 <style scoped>
 .form {

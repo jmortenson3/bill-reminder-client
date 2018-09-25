@@ -3,6 +3,7 @@ import axios from 'axios';
 
 export const userService = {
   login,
+  register,
   logout
 };
 
@@ -12,6 +13,12 @@ function login(username, password) {
   const body = { username, password };
   return axios
     .post('http://localhost:3001/api/auth/login', body);
+}
+
+function register(username, password) {
+  const body = { username, password };
+  return axios
+    .post('http://localhost:3001/api/auth/register', body);
 }
 
 function logout() {

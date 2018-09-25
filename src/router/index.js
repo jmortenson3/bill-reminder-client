@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Login from '@/components/Login';
+import LoginContainer from '@/components/LoginContainer';
 import BillList from '@/components/BillList';
-import AddBill from '@/components/AddBill';
+import BillForm from '@/components/BillForm';
 
 Vue.use(Router);
 
@@ -10,9 +10,9 @@ export const router = new Router({
   mode: 'history',
   routes: [
     {
-      path: '/login',
-      name: 'Login',
-      component: Login
+      path: '/',
+      name: 'LoginContainer',
+      component: LoginContainer
     },
     {
       path: '/bills',
@@ -22,18 +22,24 @@ export const router = new Router({
     {
       path: '/add-bill',
       name: 'AddBill',
-      component: AddBill
+      component: BillForm
+    },
+    {
+      path: '/edit-bill',
+      name: 'edit-bill',
+      component: BillForm,
+      props: true
     }
   ]
 });
 
 router.beforeEach((to, from, next) => {
-  const publicPages = ['/login'];
+  const publicPages = ['/'];
   const authRequired = !publicPages.includes(to.path);
   const loggedIn = localStorage.getItem('user');
 
   if (authRequired && !loggedIn) {
-    return next('/login');
+    return next('/');
   }
   next();
 });

@@ -2,7 +2,10 @@
   <div class="bill-list">
     <h1>Bills</h1>
     <div v-if="bills.length">
-      <p>Your total monthly bill amount is ${{ this.billTotal }}</p>
+      <p>
+        Your total monthly bill amount is
+        ${{ parseFloat(this.billTotal).toFixed(2) }}
+      </p>
       <table class="table">
         <thead>
           <tr class="table table-head">
@@ -11,6 +14,8 @@
             <td v-on:click="clickSort('nextDueDate')">Due Date</td>
             <td v-on:click="clickSort('paid')">Paid</td>
             <td>ID</td>
+            <td>Delete</td>
+            <td>Edit</td>
           </tr>
         </thead>
         <tr v-for="bill in bills" :key="bill._id" :bill="bill" >
@@ -18,11 +23,15 @@
           <td>{{ bill.amount ? '$' + parseFloat(bill.amount).toFixed(2) : null }}</td>
           <td>{{ bill.nextDueDate }}</td>
           <td v-on:click="markAsPaid(bill._id)">
-            <div v-if="bill.paid">Paid <img class="icon-dollar" widht="25" src="/static/dollar_green.png"></div>
+            <div v-if="bill.paid">
+              Paid
+              <img class="icon-dollar" widht="25" src="/static/dollar_green.png">
+            </div>
             <div v-else>Not paid <img width="25" src="/static/dollar_red.png"></div>
           </td>
           <td>{{ bill._id }}</td>
           <td><button v-on:click="deleteBill(bill._id)">X</button></td>
+          <td><button v-on:click="editBill(bill)">Edit</button></td>
         </tr>
       </table>
     </div>
@@ -68,6 +77,9 @@ export default {
           return res;
         })
         .catch(err => err);
+    },
+    editBill: function(bill) {
+      this.$router.push({ name: 'edit-bill', params: { bill } });
     },
     markAsPaid: function(id) {
       let billToUpdate = this.bills.filter(bill => bill._id === id )[0];
@@ -128,5 +140,15 @@ export default {
 
 .icon-dollar {
   width: 25px;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+button {
+  background-color: rgba(0,0,0,0);
+  border-radius: 2px;
+  box-shadow: none;
 }
 </style>
