@@ -68,7 +68,7 @@ const mutations = {
     state.user.username = user.username;
   },
   LOGIN_FAILURE: (state, err) => {
-    state.status = { loginFailed: true, error: err };
+    state.status = { loginFailed: true, error: err.response.data };
     state.user = {};
   },
   LOGOUT: (state) => {

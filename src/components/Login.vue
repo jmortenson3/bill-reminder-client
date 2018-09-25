@@ -37,6 +37,7 @@ export default {
     login: function() {
       const { username, password } = this;
       this.$store.dispatch('authentication/login', { username, password });
+      this.password = '';
     }
   }
 }

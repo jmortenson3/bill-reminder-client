@@ -1,7 +1,7 @@
 <template>
   <div class="register">
-    <div v-if="status.loginFailed" class="errorBox">
-      <p>{{ errorMessage }}</p>
+    <div v-if="status.loginFailed || error" class="errorBox">
+      <p>{{ error || status.error.message }}</p>
     </div>
     <form class="form" @submit.prevent="register" v-bind:class="{ formBorder: showBorder }">
       <label for="username">Username/email</label>
@@ -25,7 +25,8 @@ export default {
     return {
       username: '',
       password: '',
-      rePassword: ''
+      rePassword: '',
+      error: ''
     }
   },
   computed: {
@@ -38,13 +39,22 @@ export default {
   },
   methods: {
     register: function() {
-      const { username, password } = this;
-      this.$store.dispatch('authentication/register', { username, password });
+      const { username, password, rePassword } = this;
+      if (password != rePassword) {
+        this.error = 'Passwords did not match.';
+      } else {
+        this.$store.dispatch('authentication/register', { username, password });
+      }
+      this.password = '';
+      this.rePassword = '';
     }
   }
 }
 </script>
 <style scoped>
+.register {
+
+}
 .errorBox {
   margin: 25px auto;
   width: 30%;
