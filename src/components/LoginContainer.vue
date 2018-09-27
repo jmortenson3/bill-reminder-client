@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="loginContainer">
   <button
     v-on:click="showSignup"
     class="btn-toggle signup-toggle">
@@ -12,6 +12,7 @@
   </button>
   <login v-if="login" showBorder="login"></login>
   <register v-else showBorder="!login"></register>
+  <p>Hello?</p>
 </div>
 </template>
 
@@ -41,6 +42,13 @@ export default {
 }
 </script>
 <style scoped>
+.loginContainer {
+  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+      url('/static/notebook-1280538_1920.jpg') no-repeat center;
+  height: 100%;
+  min-height: 100%;
+}
+
 .btn-toggle:hover {
   cursor: pointer;
 }
@@ -51,16 +59,7 @@ export default {
   background: none;
   border: none;
   font-size: 1.45rem;
-  border-radius: 15px 15px 0 0;
-}
-
-.signup-toggle {
-  background-color: crimson;
-  color: white;
-}
-
-.login-toggle {
-  background-color: blueviolet;
-  color: white;
+  border-bottom: 3px solid black;
+  border-right: 3px solid black;
 }
 </style>

@@ -1,12 +1,10 @@
 <template>
   <div id="app">
-    <nav>
-      <div v-if="user.token">
+    <div v-if="user.token">
+      <nav>
         <router-link to="/">Log out</router-link>
-        <router-link to="/bills">List View</router-link>
-        <router-link to="/add-bill">Add Bill</router-link>
-      </div>
-    </nav>
+      </nav>
+    </div>
     <router-view/>
   </div>
 </template>
@@ -24,13 +22,25 @@ export default {
   mounted() {
   }
 }
-
 </script>
 
 <style>
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+nav {
+  text-align: right;
+}
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+  min-height: 100%;
+  background-color: #f5f5f5;
 }
 </style>

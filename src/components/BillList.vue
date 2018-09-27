@@ -13,7 +13,6 @@
             <td v-on:click="clickSort('amount')">Amount</td>
             <td v-on:click="clickSort('nextDueDate')">Due Date</td>
             <td v-on:click="clickSort('paid')">Paid</td>
-            <td>ID</td>
             <td>Delete</td>
             <td>Edit</td>
           </tr>
@@ -29,7 +28,6 @@
             </div>
             <div v-else>Not paid <img width="25" src="/static/dollar_red.png"></div>
           </td>
-          <td>{{ bill._id }}</td>
           <td><button v-on:click="deleteBill(bill._id)">X</button></td>
           <td><button v-on:click="editBill(bill)">Edit</button></td>
         </tr>
@@ -122,20 +120,32 @@ export default {
 </script>
 <style scoped>
 .table {
+  border-collapse: collapse;
   margin: 0 auto;
   width: 75%;
+  background-color: white;
+  box-shadow: 1px 2px 8px #666;
 }
 
 .table thead tr {
   font-weight: bold;
+  text-transform: uppercase;
 }
 
 .table thead tr:hover {
   cursor: pointer;
 }
 
-.table tr:nth-child(2n) {
-  background-color: #f5f5f5;
+.table tr, .table thead {
+  border-bottom: 1px solid #c2c2c2;
+}
+
+.table tr:last-child {
+  border: none;
+}
+
+.table td {
+  padding: 10px;
 }
 
 .icon-dollar {

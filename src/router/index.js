@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import LoginContainer from '@/components/LoginContainer';
+import Login from '@/components/Login';
+import Register from '@/components/Register';
 import BillList from '@/components/BillList';
 import BillForm from '@/components/BillForm';
 
@@ -11,8 +12,13 @@ export const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'LoginContainer',
-      component: LoginContainer
+      name: 'Login',
+      component: Login
+    },
+    {
+      path: '/register',
+      name: 'Register',
+      component: Register
     },
     {
       path: '/bills',
@@ -34,7 +40,7 @@ export const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  const publicPages = ['/'];
+  const publicPages = ['/', '/register'];
   const authRequired = !publicPages.includes(to.path);
   const loggedIn = localStorage.getItem('user');
 
