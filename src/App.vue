@@ -2,7 +2,12 @@
   <div id="app">
     <div v-if="user.token">
       <nav>
-        <router-link to="/">Log out</router-link>
+        <router-link to="/">
+          Log out&nbsp;
+          <font-awesome-icon
+            icon="sign-out-alt"
+            size="lg" />
+        </router-link>
       </nav>
     </div>
     <router-view/>
@@ -33,6 +38,12 @@ html, body {
 
 nav {
   text-align: right;
+  padding-top: 20px;
+  padding-right: 50px;
+}
+
+a {
+  text-decoration: none;
 }
 
 #app {
@@ -41,6 +52,6 @@ nav {
   -moz-osx-font-smoothing: grayscale;
   height: 100%;
   min-height: 100%;
-  background-color: #f5f5f5;
+  background-color: #c5e5f5;
 }
 </style>

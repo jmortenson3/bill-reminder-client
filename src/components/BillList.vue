@@ -2,34 +2,42 @@
   <div class="bill-list">
     <h1>Bills</h1>
     <div v-if="bills.length">
-      <p>
-        Your total monthly bill amount is
-        ${{ parseFloat(this.billTotal).toFixed(2) }}
+      <p class="topText">
+        Total monthly bill amount:
+        <span class="totalBillAmount">${{ parseFloat(this.billTotal).toFixed(2) }}</span>
+      </p>
+      <p class="topText newBillText" v-on:click="goToBillForm()">New Bill
+        <font-awesome-icon icon="hand-point-right" size="lg" />
       </p>
       <table class="table">
         <thead>
-          <tr class="table table-head">
+          <tr class="table-head">
+            <td></td>
             <td v-on:click="clickSort('title')">Title</td>
             <td v-on:click="clickSort('amount')">Amount</td>
             <td v-on:click="clickSort('nextDueDate')">Due Date</td>
             <td v-on:click="clickSort('paid')">Paid</td>
-            <td>Delete</td>
-            <td>Edit</td>
+            <td></td>
           </tr>
         </thead>
         <tr v-for="bill in bills" :key="bill._id" :bill="bill" >
+          <td class="editBill" v-on:click="editBill(bill)">
+            <font-awesome-icon icon="cog" />
+          </td>
           <td>{{ bill.title }}</td>
           <td>{{ bill.amount ? '$' + parseFloat(bill.amount).toFixed(2) : null }}</td>
-          <td>{{ bill.nextDueDate }}</td>
+          <td>{{ formatDate(bill.nextDueDate) }}</td>
           <td v-on:click="markAsPaid(bill._id)">
             <div v-if="bill.paid">
-              Paid
-              <img class="icon-dollar" widht="25" src="/static/dollar_green.png">
+              <font-awesome-icon class="paidIcon" icon="check-circle" :style="{ color: 'green' }"/>
             </div>
-            <div v-else>Not paid <img width="25" src="/static/dollar_red.png"></div>
+            <div v-else>
+              <font-awesome-icon class="paidIcon" icon="check-circle" :style="{ color: '#bbb' }" />
+            </div>
           </td>
-          <td><button v-on:click="deleteBill(bill._id)">X</button></td>
-          <td><button v-on:click="editBill(bill)">Edit</button></td>
+          <td class="deleteBill" v-on:click="deleteBill(bill._id)">
+            <font-awesome-icon icon="trash-alt" />
+          </td>
         </tr>
       </table>
     </div>
@@ -114,15 +122,38 @@ export default {
         return 0;
       });
       this.ascending = !this.ascending;
+    },
+    formatDate: function(date) {
+      return date === undefined
+        ? ''
+        : new Date(date).toLocaleDateString();
+    },
+    goToBillForm: function() {
+      this.$router.push('/add-bill');
     }
   }
 }
 </script>
 <style scoped>
+.bill-list {
+  width: 75%;
+  margin: 0 auto 100px auto;
+  color: #171761;
+}
+
+.bill-list h1 {
+  font-size: 4rem;
+  margin-bottom: 5px;
+}
+
+.totalBillAmount {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
 .table {
   border-collapse: collapse;
-  margin: 0 auto;
-  width: 75%;
+  width: 100%;
   background-color: white;
   box-shadow: 1px 2px 8px #666;
 }
@@ -130,6 +161,8 @@ export default {
 .table thead tr {
   font-weight: bold;
   text-transform: uppercase;
+  background-color: #171761;
+  color: white;
 }
 
 .table thead tr:hover {
@@ -151,14 +184,35 @@ export default {
 .icon-dollar {
   width: 25px;
 }
-
-button:hover {
-  cursor: pointer;
-}
-
 button {
   background-color: rgba(0,0,0,0);
   border-radius: 2px;
   box-shadow: none;
+}
+
+.deleteBill {
+  color: red;
+}
+
+.editBill {
+  color: #555;
+}
+
+.deleteBill:hover, .editBill:hover, .paidIcon:hover,
+.newBillText:hover {
+  cursor: pointer;
+}
+
+.paidIcon {
+  text-align: center;
+}
+
+.topText {
+  display: inline-block;
+  font-size: 1.2rem;
+}
+
+.newBillText {
+  float: right;
 }
 </style>

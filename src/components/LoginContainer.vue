@@ -48,18 +48,4 @@ export default {
   height: 100%;
   min-height: 100%;
 }
-
-.btn-toggle:hover {
-  cursor: pointer;
-}
-
-.btn-toggle {
-  width: 20%;
-  height: 50px;
-  background: none;
-  border: none;
-  font-size: 1.45rem;
-  border-bottom: 3px solid black;
-  border-right: 3px solid black;
-}
 </style>

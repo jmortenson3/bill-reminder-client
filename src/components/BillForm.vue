@@ -3,11 +3,15 @@
     <!-- add or edit bill -->
     <h1 v-if="bill">Edit a bill</h1>
     <h1 v-else>Add a bill</h1>
+    <p class="goBackText" v-on:click="goToBillList()">
+      <font-awesome-icon icon="hand-point-left" size="lg"/>
+      Go back
+    </p>
     <form method="post" @submit.prevent="submitForm">
       <label for="title">Bill name</label>
       <input type="text" v-model="title" id="title">
       <label for="amount">Amount</label>
-      <input type="text" v-model="amount" id="amount">
+      <input type="number" step=".01" v-model="amount" id="amount">
       <label for="payAtUrl">URL to pay at</label>
       <input type="text" v-model="payAtUrl" id="payAtUrl">
       <label for="dueDateUOM">My bill is due every...</label>
@@ -108,29 +112,48 @@ export default {
 .form {
   width: 40%;
   margin: 0 auto;
+  color: #171761;
+}
+
+.form p, .form h1 {
+  display: inline-block;
+}
+
+.form h1 {
+  font-size: 3rem;
+  float: right;
+  margin: 0;
 }
 
 .form button {
+  color: white;
   margin-top: 40px;
-  box-shadow: 2px 2px black;
+  box-shadow: 1px 2px 4px black;
   height: 50px;
-  width: 155px;
+  width: 100%;
   font-weight: bold;
   font-size: 24px;
-  background-color: #43f38a;
+  background-color: #171761;
   border: none;
   padding: 5px 15px;
 }
+
 .form button:hover {
   cursor: pointer;
   transform: translateY(1px);
 }
 
+form {
+  position: relative;
+  top: 25px;
+}
+
 form input, form label, form select {
   display: block;
-}
-form input, form select {
   width: 100%;
+}
+
+form input, form select {
   margin: 0 0 15px 0;
   height: 35px;
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
@@ -138,7 +161,17 @@ form input, form select {
   box-sizing: border-box;         /* Opera/IE 8+ */
   padding: 0 15px;
 }
+
 form label {
   text-align: left;
+}
+
+.goBackText {
+  position: relative;
+  top: 10px;
+}
+
+.goBackText:hover {
+  cursor: pointer;
 }
 </style>
