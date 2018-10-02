@@ -29,13 +29,13 @@
           <td>{{ formatDate(bill.nextDueDate) }}</td>
           <td v-on:click="markAsPaid(bill._id)">
             <div v-if="bill.paid">
-              <font-awesome-icon class="paidIcon" icon="check-circle" :style="{ color: 'green' }"/>
+              <font-awesome-icon class="paidIcon" icon="check-circle" :style="{ color: '#26a67a' }"/>
             </div>
             <div v-else>
               <font-awesome-icon class="paidIcon" icon="check-circle" :style="{ color: '#bbb' }" />
             </div>
           </td>
-          <td class="deleteBill" v-on:click="deleteBill(bill._id)">
+          <td class="deleteBill" v-on:click="markAsDelete(bill._id)">
             <font-awesome-icon icon="trash-alt" />
           </td>
         </tr>
@@ -44,42 +44,76 @@
     <div v-else>
       <p>No bills to display.</p>
     </div>
+    <toast v-if='shouldShowToast'
+      :id="billToDeleteId"
+      :toast-text='`Deleted bill "${billToDeleteName}".`'
+      btn-text='Undo'
+      :btn-function="undoDelete" />
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import { billService } from '../services/bill';
+import Toast from './Toast';
 
 export default {
+
   data () {
     return {
       bills: [],
       ascending: true,
-      billTotal: 0
+      billTotal: 0,
+      billToDeleteId: '',
+      billToDeleteName: '',
+      shouldShowToast: false,
+      deleteTimer: null
     }
   },
+  components: {
+    Toast
+  },
   mounted() {
-    billService.getBills()
-      .then(response => {
-        this.bills = response.data;
-        this.billTotal = this.bills.length > 0
-                ? this.bills.map(bill => bill.amount).reduce((a, c) => a + c)
-                : 0;
-      })
-      .catch(err => console.log(err).data);
+    this.refreshBillList();
   },
   beforeUpdate() {
     this.billTotal = this.bills.length > 0
-            ? this.bills.map(bill => bill.amount).reduce((a, c) => a + c)
-            : 0;
+      ? this.bills.map(bill => bill.amount).reduce((a, c) => a + c)
+      : 0;
   },
   methods: {
-    deleteBill: function(id) {
-      console.log(`Deleting bill with id ${id}`.data);
-      billService.deleteBill(id)
+    refreshBillList() {
+      billService.getBills()
+        .then(response => {
+          this.bills = response.data
+            ? response.data.filter(bill => !bill.doDelete)
+            : response.data;
+          this.billTotal = this.bills.length > 0
+            ? this.bills.map(bill => bill.amount).reduce((a, c) => a + c)
+            : 0;
+        })
+        .catch(err => console.log(err).data);
+    },
+    markAsDelete: function(id) {
+      console.log(`Marking this bill to be deleted. id: ${id}`.data);
+      billService.updateBill(id, { doDelete: true})
         .then(res => {
+          this.billToDeleteId = id;
+          this.billToDeleteName = this.bills.filter(bill => bill._id === id)[0].title;
           this.bills = this.bills.filter(bill => bill._id !== id);
+          this.showToast();
+          return res;
+        })
+        .catch(err => err);
+    },
+    undoDelete: function(id) {
+      billService.updateBill(id, { doDelete: false })
+        .then(res => {
+          this.refreshBillList();
+          setTimeout(() => {
+            this.shouldShowToast = false;
+            clearTimeout(this.deleteTimer);
+          }, 300);
           return res;
         })
         .catch(err => err);
@@ -89,7 +123,6 @@ export default {
     },
     markAsPaid: function(id) {
       let billToUpdate = this.bills.filter(bill => bill._id === id )[0];
-      console.log(`Marking bill ${id} as paid: ${!billToUpdate.paid}`.data);
       const body = {
         paid: !billToUpdate.paid
       }
@@ -108,11 +141,11 @@ export default {
         a[field] = a[field] || false;
         b[field] = b[field] || false;
         const x = ['string', 'boolean'].includes(typeof a[field])
-                ? a[field].toString().toLowerCase()
-                : a[field];
+          ? a[field].toString().toLowerCase()
+          : a[field];
         const y = ['string', 'boolean'].includes(typeof b[field])
-                ? b[field].toString().toLowerCase()
-                : b[field];
+          ? b[field].toString().toLowerCase()
+          : b[field];
         if (x < y) {
           return that.ascending ? -1: 1;
         }
@@ -130,6 +163,12 @@ export default {
     },
     goToBillForm: function() {
       this.$router.push('/add-bill');
+    },
+    showToast: function() {
+      this.shouldShowToast = true;
+      this.deleteTimer = setTimeout(() => {
+        this.shouldShowToast = false;
+      }, 10000);
     }
   }
 }

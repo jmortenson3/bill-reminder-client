@@ -69,10 +69,6 @@ export default {
   border-radius: 5px;
 }
 
-.errorBox p {
-
-}
-
 .login {
   color: #c2c2c2;
   top: 15%;
