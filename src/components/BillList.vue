@@ -21,22 +21,41 @@
           </tr>
         </thead>
         <tr v-for="bill in bills" :key="bill._id" :bill="bill" >
-          <td class="editBill" v-on:click="editBill(bill)">
-            <font-awesome-icon icon="cog" />
+          <td class="iconRow">
+            <font-awesome-icon
+              v-on:click="editBill(bill)"
+              class="editBill"
+              icon="cog" />
+            <font-awesome-icon
+              v-if="$resize && $mq.below(501)"
+              v-on:click="markAsDelete(bill._id)"
+              class="deleteBill"
+              icon="trash-alt" />
           </td>
-          <td>{{ bill.title }}</td>
-          <td>{{ bill.amount ? '$' + parseFloat(bill.amount).toFixed(2) : null }}</td>
-          <td>{{ formatDate(bill.nextDueDate) }}</td>
-          <td v-on:click="markAsPaid(bill._id)">
-            <div v-if="bill.paid">
-              <font-awesome-icon class="paidIcon" icon="check-circle" :style="{ color: '#26a67a' }"/>
-            </div>
-            <div v-else>
-              <font-awesome-icon class="paidIcon" icon="check-circle" :style="{ color: '#bbb' }" />
-            </div>
+          <td data-label="TITLE">{{ bill.title }}</td>
+          <td data-label="AMOUNT">
+            {{ bill.amount ? '$' + parseFloat(bill.amount).toFixed(2) : null }}
           </td>
-          <td class="deleteBill" v-on:click="markAsDelete(bill._id)">
-            <font-awesome-icon icon="trash-alt" />
+          <td data-label="NEXT DUE DATE">{{ formatDate(bill.nextDueDate) }}</td>
+          <td data-label="PAID">
+            <font-awesome-icon
+              v-if="bill.paid"
+              v-on:click="markAsPaid(bill._id)"
+              class="paidIcon"
+              icon="check-circle"
+              :style="{ color: '#26a67a' }" />
+            <font-awesome-icon
+              v-else
+              v-on:click="markAsPaid(bill._id)"
+              class="paidIcon"
+              icon="check-circle"
+              :style="{ color: '#bbb' }" />
+          </td>
+          <td v-if="$resize && $mq.above(500)">
+            <font-awesome-icon
+              class="deleteBill"
+              v-on:click="markAsDelete(bill._id)"
+              icon="trash-alt" />
           </td>
         </tr>
       </table>
@@ -223,11 +242,6 @@ export default {
 .icon-dollar {
   width: 25px;
 }
-button {
-  background-color: rgba(0,0,0,0);
-  border-radius: 2px;
-  box-shadow: none;
-}
 
 .deleteBill {
   color: red;
@@ -253,5 +267,67 @@ button {
 
 .newBillText {
   float: right;
+}
+
+@media only screen and (max-device-width: 500px) {
+  .bill-list {
+    width: 90%;
+    margin: 0 auto;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+  }
+
+  .table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: white;
+    box-shadow: 1px 2px 8px #666;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+  }
+
+  .table thead {
+    border: none;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+
+  .table tr {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    margin-bottom: 25px;
+  }
+
+  .table td {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    text-align: right;
+  }
+
+  .table td::before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+  }
+
+  .iconRow::before {
+    display: none;
+  }
+
+  .iconRow > svg {
+    text-align: left;
+  }
+
+  .editBill {
+    float: left;
+  }
+
 }
 </style>

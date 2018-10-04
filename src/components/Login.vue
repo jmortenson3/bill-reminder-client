@@ -67,6 +67,9 @@ export default {
   padding: 10px;
   background-color: rgba(255, 53, 103, 0.4);
   border-radius: 5px;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
 .login {
@@ -79,6 +82,9 @@ export default {
   border: 1px solid rgba(0,0,0,0);
   padding: 0 35px;
   background-color: rgba(0, 0, 0, 0.5);
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
 h1 {
@@ -149,5 +155,19 @@ form label {
   font-size: 36px;
   width: 40px;
   top: 7px;
+}
+
+@media only screen and (max-device-width: 500px) {
+  .login {
+    min-width: none;
+    width: 90%;
+    left: 0;
+    padding: 0 10px;
+  }
+
+  .errorBox {
+    max-height: 75px;
+    width: 90%;
+  }
 }
 </style>

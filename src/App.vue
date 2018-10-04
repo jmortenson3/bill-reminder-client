@@ -54,4 +54,11 @@ a {
   min-height: 100%;
   background-color: #c5e5f5;
 }
+
+@media only screen and (max-device-width: 500px) {
+  nav {
+    padding-top: 20px;
+    padding-right: 10px;
+  }
+}
 </style>

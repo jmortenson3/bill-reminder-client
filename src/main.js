@@ -4,6 +4,7 @@ import Vue from 'vue';
 import App from './App';
 import { router } from './router';
 import { store } from './store';
+import { MediaQueries } from 'vue-media-queries';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faTrashAlt,
@@ -20,8 +21,10 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(faTrashAlt, faCog, faCheckCircle,
   faSignOutAlt, faPlusCircle, faHandPointLeft, faHandPointRight,
   faLock, faEnvelope);
-
 Vue.component('font-awesome-icon', FontAwesomeIcon);
+
+const mediaQueries = new MediaQueries();
+Vue.use(mediaQueries);
 
 Vue.config.productionTip = false;
 
@@ -31,5 +34,6 @@ new Vue({
   store,
   router,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  mediaQueries
 });

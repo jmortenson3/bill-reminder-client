@@ -174,4 +174,13 @@ form label {
 .goBackText:hover {
   cursor: pointer;
 }
+
+@media only screen and (max-device-width: 500px) {
+  .form {
+    width: 90%;
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+  }
+}
 </style>
