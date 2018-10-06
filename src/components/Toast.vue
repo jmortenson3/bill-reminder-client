@@ -43,6 +43,24 @@ export default {
   border-radius: 5px;
   padding: 5px 20px;
 }
+
+@media (max-width: 600px) {
+  .toast {
+    position: fixed;
+    bottom: 0;
+    max-width: none;
+    min-width: none;
+    width: 90%;
+    margin: 10px auto;
+    padding: 10px;
+    text-align: center;
+    color: white;
+    background-color: rgba(0, 0, 0, .7);
+    border-radius: 15px;
+    z-index: 999999;
+    box-shadow: 1px 2px 8px #666;
+  }
+}
 </style>
 
 

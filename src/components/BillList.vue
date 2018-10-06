@@ -1,15 +1,15 @@
 <template>
   <div class="bill-list">
     <h1>Bills</h1>
-    <div v-if="bills.length">
-      <p class="topText">
+    <div>
+      <p v-if="bills.length" class="topText">
         Total monthly bill amount:
         <span class="totalBillAmount">${{ parseFloat(this.billTotal).toFixed(2) }}</span>
       </p>
       <p class="topText newBillText" v-on:click="goToBillForm()">New Bill
         <font-awesome-icon icon="hand-point-right" size="lg" />
       </p>
-      <table class="table">
+      <table v-if="bills.length" class="table">
         <thead>
           <tr class="table-head">
             <td></td>
@@ -27,7 +27,7 @@
               class="editBill"
               icon="cog" />
             <font-awesome-icon
-              v-if="$resize && $mq.below(501)"
+              v-if="$resize && $mq.below(600)"
               v-on:click="markAsDelete(bill._id)"
               class="deleteBill"
               icon="trash-alt" />
@@ -38,6 +38,7 @@
           </td>
           <td data-label="NEXT DUE DATE">{{ formatDate(bill.nextDueDate) }}</td>
           <td data-label="PAID">
+            {{bill._id}}
             <font-awesome-icon
               v-if="bill.paid"
               v-on:click="markAsPaid(bill._id)"
@@ -51,7 +52,7 @@
               icon="check-circle"
               :style="{ color: '#bbb' }" />
           </td>
-          <td v-if="$resize && $mq.above(500)">
+          <td v-if="$resize && $mq.above(601)">
             <font-awesome-icon
               class="deleteBill"
               v-on:click="markAsDelete(bill._id)"
@@ -60,7 +61,7 @@
         </tr>
       </table>
     </div>
-    <div v-else>
+    <div v-if="!bills.length">
       <p>No bills to display.</p>
     </div>
     <toast v-if='shouldShowToast'
@@ -110,6 +111,10 @@ export default {
           this.billTotal = this.bills.length > 0
             ? this.bills.map(bill => bill.amount).reduce((a, c) => a + c)
             : 0;
+          console.log("New bill list:");
+          this.bills.forEach(bill => {
+            console.log(JSON.stringify(bill));
+          })
         })
         .catch(err => console.log(err).data);
     },
@@ -177,7 +182,7 @@ export default {
     },
     formatDate: function(date) {
       return date === undefined
-        ? ''
+        ? '-'
         : new Date(date).toLocaleDateString();
     },
     goToBillForm: function() {
@@ -269,10 +274,11 @@ export default {
   float: right;
 }
 
-@media only screen and (max-device-width: 500px) {
+@media (max-width: 600px) {
   .bill-list {
     width: 90%;
     margin: 0 auto;
+    padding-bottom: 25px;
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
     box-sizing: border-box;         /* Opera/IE 8+ */

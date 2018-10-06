@@ -50,12 +50,12 @@ a {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  height: 100%;
+  /* height: 100%; */
   min-height: 100%;
   background-color: #c5e5f5;
 }
 
-@media only screen and (max-device-width: 500px) {
+@media (max-device-width: 600px) {
   nav {
     padding-top: 20px;
     padding-right: 10px;

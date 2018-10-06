@@ -175,7 +175,7 @@ form label {
   cursor: pointer;
 }
 
-@media only screen and (max-device-width: 500px) {
+@media (max-device-width: 600px) {
   .form {
     width: 90%;
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */

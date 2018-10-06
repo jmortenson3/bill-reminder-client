@@ -157,12 +157,13 @@ form label {
   top: 7px;
 }
 
-@media only screen and (max-device-width: 500px) {
+@media (max-device-width: 600px) {
   .login {
     min-width: none;
     width: 90%;
     left: 0;
     padding: 0 10px;
+    margin: 0 auto;
   }
 
   .errorBox {
