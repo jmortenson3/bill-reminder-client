@@ -7,15 +7,23 @@
     <h1>Sign up</h1>
     <form class="form" @submit.prevent="register" v-bind:class="{ formBorder: showBorder }">
       <label for="username">Username/email</label>
-      <font-awesome-icon icon="envelope" class="icon" />
-      <input required v-model="username" type="text" placeholder="Email">
+      <div class="inputGroup">
+        <font-awesome-icon icon="envelope" class="icon" />
+        <input required v-model="username" type="text" placeholder="Email">
+      </div>
       <label for="password">Password</label>
-      <font-awesome-icon icon="lock" class="icon" />
-      <input required v-model="password" type="password" placeholder="Password">
+      <div class="inputGroup">
+        <font-awesome-icon icon="lock" class="icon" />
+        <input required v-model="password" type="password" placeholder="Password">
+      </div>
       <label for="re-password">Confirm password</label>
-      <font-awesome-icon icon="lock" class="icon" />
-      <input required v-model="rePassword" type="password" placeholder="Confirm password">
-      <button type="submit">Sign up</button>
+      <div class="inputGroup">
+        <font-awesome-icon icon="lock" class="icon" />
+        <input required v-model="rePassword" type="password" placeholder="Confirm password">
+      </div>
+      <div class="inputGroup">
+        <button type="submit">Sign up</button>
+      </div>
     </form>
     <p class="loginText">
       Already have an account?
@@ -63,9 +71,9 @@ export default {
 </script>
 <style scoped>
 .registerContainer {
+  flex: 1;
   background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
       url('/static/notebook-1280538_1920.jpg') no-repeat center;
-  height: 100%;
   min-height: 100%;
 }
 .errorBox {
@@ -78,16 +86,12 @@ export default {
   border-radius: 5px;
 }
 
-.errorBox p {
-
-}
-
 .register {
   color: #c2c2c2;
-  top: 15%;
+  margin-top: 10%;
   position: relative;
-  width: 25%;
-  min-width: 300px;
+  width: 31%;
+  min-width: 370px;
   left: 10%;
   border: 1px solid rgba(0,0,0,0);
   padding: 0 35px;
@@ -103,11 +107,28 @@ h1 {
   padding-bottom: 15px;
 }
 
+.inputGroup {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.inputGroup input {
+  flex: 1;
+  margin-left: 10px;
+}
+
+.inputGroup button {
+  flex: 1;
+  margin-left: 50px;
+}
+
+.icon {
+  font-size: 36px;
+  width: 40px;
+}
+
 .form button {
-  position: relative;
-  left: 40px;
   height: 40px;
-  width: 78%;
   text-transform: uppercase;
   font-size: 1rem;
   background-color: rgba(0, 0, 0, 0);
@@ -121,23 +142,17 @@ h1 {
   transform: translateY(1px);
 }
 
-form input, form label, form select {
-  display: block;
-}
-
 form label {
   display: none;
 }
 
-form input, form select {
+form input {
   color: #fff;
-  margin: 0 0 15px 0;
   height: 40px;
   background-color: rgba(255, 255, 255, 0.4);
   border: none;
   font-size: 1rem;
   padding: 0 25px;
-  display: inline-block;
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
   -moz-box-sizing: border-box;    /* Firefox, other Gecko */
   box-sizing: border-box;         /* Opera/IE 8+ */
@@ -159,21 +174,13 @@ form label {
   color: yellow;
 }
 
-.icon {
-  position: relative;
-  display: inline-block;
-  font-size: 36px;
-  width: 40px;
-  top: 7px;
-}
-
-@media (max-device-width: 600px) {
+@media (max-width: 600px) {
   .register {
-    min-width: none;
+    min-width: 0;
     width: 90%;
     left: 0;
     padding: 0 10px;
-    margin: 0 auto;
+    margin: 25% auto;
   }
 
   .errorBox {

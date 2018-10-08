@@ -4,7 +4,9 @@
     <div>
       <p v-if="bills.length" class="topText">
         Total monthly bill amount:
-        <span class="totalBillAmount">${{ parseFloat(this.billTotal).toFixed(2) }}</span>
+        <span class="totalBillAmount">
+          ${{ this.billTotal }}
+        </span>
       </p>
       <p class="topText newBillText" v-on:click="goToBillForm()">New Bill
         <font-awesome-icon icon="hand-point-right" size="lg" />
@@ -34,11 +36,10 @@
           </td>
           <td data-label="TITLE">{{ bill.title }}</td>
           <td data-label="AMOUNT">
-            {{ bill.amount ? '$' + parseFloat(bill.amount).toFixed(2) : null }}
+            {{ bill.amount ? '$' + parseFloat(bill.amount).toFixed(2) : '-' }}
           </td>
           <td data-label="NEXT DUE DATE">{{ formatDate(bill.nextDueDate) }}</td>
           <td data-label="PAID">
-            {{bill._id}}
             <font-awesome-icon
               v-if="bill.paid"
               v-on:click="markAsPaid(bill._id)"
@@ -199,6 +200,7 @@ export default {
 </script>
 <style scoped>
 .bill-list {
+  flex: 1;
   width: 75%;
   margin: 0 auto 100px auto;
   color: #171761;

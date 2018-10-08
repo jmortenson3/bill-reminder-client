@@ -36,8 +36,13 @@ html, body {
   height: 100%;
 }
 
+body {
+  background-color: #c5e5f5;
+}
+
 nav {
   text-align: right;
+  float: right;
   padding-top: 20px;
   padding-right: 50px;
 }
@@ -47,12 +52,12 @@ a {
 }
 
 #app {
+  display: flex;
+  flex-direction: column;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* height: 100%; */
   min-height: 100%;
-  background-color: #c5e5f5;
 }
 
 @media (max-device-width: 600px) {
