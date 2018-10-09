@@ -1,12 +1,10 @@
 <template>
   <div class="loginContainer">
     <div class="login">
-      <div v-if="status.loginFailed" class="errorBox">
-        <p>Username or password were not correct</p>
-      </div>
       <div class="title">
         <h1>Log in to Budger</h1>
       </div>
+      <p v-if="status.loginFailed" class="error">Username or password incorrect.</p>
       <form class="form" @submit.prevent="login" v-bind:class="{ formBorder: showBorder }">
         <label for="username">Username/email:</label>
         <div class="inputGroup">
@@ -56,7 +54,7 @@ export default {
       this.$store.dispatch('authentication/login', { username, password });
       this.password = '';
     }
-  }
+  },
 }
 </script>
 
@@ -67,17 +65,9 @@ export default {
   min-height: 100%;
 }
 
-.errorBox {
-  top: -85px;
+.error {
+  color: rgba(255, 53, 103);
   text-align: center;
-  position: absolute;
-  width: 300px;
-  padding: 10px;
-  background-color: rgba(255, 53, 103, 0.4);
-  border-radius: 5px;
-  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-  box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
 .login {
@@ -179,11 +169,6 @@ form label {
     left: 0;
     padding: 0 10px;
     margin: 25% auto;
-  }
-
-  .errorBox {
-    max-height: 75px;
-    width: 90%;
   }
 }
 </style>

@@ -1,13 +1,13 @@
 <template>
 <div class="registerContainer">
   <div class="register">
-    <div v-if="status.loginFailed || error" class="errorBox">
-      <p>{{ error || status.error.message }}</p>
+    <div class="title">
+      <h1>Budger</h1>
+      <small>See all your bills in one spot.</small>
     </div>
-      <div class="title">
-        <h1>Budger</h1>
-        <small>See all your bills in one spot.</small>
-      </div>
+    <p v-if="status.loginFailed || error" class="error">
+      {{ this.error }}
+    </p>
     <form class="form" @submit.prevent="register" v-bind:class="{ formBorder: showBorder }">
       <label for="username">Username/email</label>
       <div class="inputGroup">
@@ -49,7 +49,7 @@ export default {
       password: '',
       rePassword: '',
       error: '',
-      submitStatus: null
+      submitStatus: null,
     }
   },
   computed: {
@@ -59,16 +59,18 @@ export default {
   },
   validations: {
     username: {
-      required
+      required,
+      minLength: minLength(6),
+      maxLength: maxLength(255),
     },
     password: {
       required,
       minLength: minLength(6),
-      maxLength: maxLength(255)
+      maxLength: maxLength(255),
     },
     rePassword: {
       required,
-      sameAsPassword: sameAs('password')
+      sameAsPassword: sameAs('password'),
     }
   },
   mounted() {
@@ -78,9 +80,7 @@ export default {
     register: function() {
       const { username, password } = this;
       this.$v.$touch();
-      console.log(`Is it valid?  ${this.$v.$invalid}`);
-      return;
-      if (!this.$v.invalid) {
+      if (!this.$v.$invalid) {
         this.$store.dispatch('authentication/register', { username, password });
         this.password = '';
         this.rePassword = '';
@@ -88,8 +88,8 @@ export default {
         // switch case for setting this.error
         this.error = 'Passwords did not match.';
       }
-    }
-  }
+    },
+  },
 }
 </script>
 <style scoped>
@@ -98,14 +98,8 @@ export default {
   background-color: #14213D;
   min-height: 100%;
 }
-.errorBox {
-  top: -85px;
-  text-align: center;
-  position: absolute;
-  width: 300px;
-  padding: 10px;
-  background-color: rgba(255, 53, 103, 0.4);
-  border-radius: 5px;
+.error {
+  color: rgba(255, 53, 103);
 }
 
 .register {
@@ -208,11 +202,6 @@ form label {
     left: 0;
     padding: 0 10px;
     margin: 25% auto;
-  }
-
-  .errorBox {
-    max-height: 75px;
-    width: 90%;
   }
 }
 </style>

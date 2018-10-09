@@ -52,8 +52,8 @@ export default {
         { text: 'other month', value: 'bi-month' },
         { text: '3 months', value: 'tri-month' },
         { text: '6 months', value: 'bi-year' },
-        { text: 'year', value: 'year' }
-      ]
+        { text: 'year', value: 'year' },
+      ],
     }
   },
   methods: {
@@ -63,7 +63,7 @@ export default {
         amount: this.amount,
         payAtUrl: this.payAtUrl,
         dueEvery: this.dueEvery,
-        firstDueDate: this.firstDueDate
+        firstDueDate: this.firstDueDate,
       }
       if (this.bill) {
         // update bill
@@ -103,8 +103,8 @@ export default {
     },
     goToBillList: function() {
       this.$router.push('/bills');
-    }
-  }
+    },
+  },
 }
 </script>
 

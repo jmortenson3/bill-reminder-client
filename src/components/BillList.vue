@@ -88,7 +88,7 @@ export default {
       billToDeleteId: '',
       billToDeleteName: '',
       shouldShowToast: false,
-      deleteTimer: null
+      deleteTimer: null,
     }
   },
   components: {
@@ -194,8 +194,8 @@ export default {
       this.deleteTimer = setTimeout(() => {
         this.shouldShowToast = false;
       }, 10000);
-    }
-  }
+    },
+  },
 }
 </script>
 <style scoped>

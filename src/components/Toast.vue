@@ -13,6 +13,7 @@ export default {
   }
 }
 </script>
+
 <style>
 .toast {
   max-width: 750px;
