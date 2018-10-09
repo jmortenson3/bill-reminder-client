@@ -4,12 +4,12 @@
     <h1 v-if="bill">Edit a bill</h1>
     <h1 v-else>Add a bill</h1>
     <p class="goBackText" v-on:click="goToBillList()">
-      <font-awesome-icon icon="hand-point-left" size="lg"/>
+      <font-awesome-icon icon="hand-point-left" class="goBackIcon" size="lg"/>
       Go back
     </p>
     <form method="post" @submit.prevent="submitForm">
       <label for="title">Bill name</label>
-      <input type="text" v-model="title" id="title">
+      <input type="text" v-model="title" required id="title">
       <label for="amount">Amount</label>
       <input type="number" step=".01" v-model="amount" id="amount">
       <label for="payAtUrl">URL to pay at</label>
@@ -112,7 +112,7 @@ export default {
 .form {
   width: 40%;
   margin: 0 auto;
-  color: #171761;
+  color: white;
 }
 
 .form p, .form h1 {
@@ -128,19 +128,18 @@ export default {
 .form button {
   color: white;
   margin-top: 40px;
-  box-shadow: 1px 2px 4px black;
   height: 50px;
   width: 100%;
   font-weight: bold;
   font-size: 24px;
-  background-color: #171761;
+  background-color: #26a67a;
   border: none;
   padding: 5px 15px;
 }
 
 .form button:hover {
   cursor: pointer;
-  transform: translateY(1px);
+  background-color: #2dc08d;
 }
 
 form {
@@ -175,7 +174,11 @@ form label {
   cursor: pointer;
 }
 
-@media (max-device-width: 600px) {
+.goBackIcon {
+  color: #FCA311;
+}
+
+@media (max-width: 600px) {
   .form {
     width: 90%;
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */

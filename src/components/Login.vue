@@ -4,7 +4,9 @@
       <div v-if="status.loginFailed" class="errorBox">
         <p>Username or password were not correct</p>
       </div>
-      <h1>All your bills<br>in one spot.</h1>
+      <div class="title">
+        <h1>Log in to Budger</h1>
+      </div>
       <form class="form" @submit.prevent="login" v-bind:class="{ formBorder: showBorder }">
         <label for="username">Username/email:</label>
         <div class="inputGroup">
@@ -61,8 +63,7 @@ export default {
 <style scoped>
 .loginContainer {
   flex: 1;
-  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
-      url('/static/notebook-1280538_1920.jpg') no-repeat center;
+  background-color: #14213D;
   min-height: 100%;
 }
 
@@ -80,54 +81,58 @@ export default {
 }
 
 .login {
-  color: #c2c2c2;
-  margin-top: 10%;
+  color: #14213D;
+  margin: 90px auto auto auto;
   position: relative;
-  width: 31%;
+  width: 28%;
   min-width: 370px;
-  left: 10%;
-  border: 1px solid rgba(0,0,0,0);
+  border: 1px solid rgba(0, 0, 0, 0);
   padding: 0 35px;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: white;
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
   -moz-box-sizing: border-box;    /* Firefox, other Gecko */
   box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
-h1 {
+.title {
+  color: #14213D;
+  margin-bottom: 45px;
+}
+
+.title h1 {
   font-size: 2.5rem;
-  border-bottom: 1px solid #c2c2c2;
-  padding-bottom: 15px;
+  margin-bottom: 0px;
+}
+
+.title small {
+  font-size: 1.4rem;
 }
 
 .inputGroup {
   display: flex;
-  margin-bottom: 20px;
+  margin-bottom: 35px;
 }
 
 .inputGroup input {
   flex: 1;
-  margin-left: 10px;
+  margin-left: 5px;
 }
 
 .inputGroup button {
   flex: 1;
-  margin-left: 50px;
-}
-
-.form button {
+  margin-left: 10px;
   height: 40px;
   text-transform: uppercase;
   font-size: 1rem;
-  background-color: rgba(0, 0, 0, 0);
-  color: #c2c2c2;
-  border: 2px solid #c2c2c2;
+  background-color: #26a67a;
+  color: white;
+  border: none;
   padding: 5px 15px;
 }
 
 .form button:hover {
   cursor: pointer;
-  transform: translateY(1px);
+  background-color: #2dc08d;
 }
 
 form label {
@@ -135,19 +140,15 @@ form label {
 }
 
 form input {
-  color: #fff;
   height: 40px;
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: #E5E5E5;
   border: none;
+  border-radius: 25px;
   font-size: 1rem;
   padding: 0 25px;
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
   -moz-box-sizing: border-box;    /* Firefox, other Gecko */
   box-sizing: border-box;         /* Opera/IE 8+ */
-}
-
-::placeholder {
-  color: white;
 }
 
 form label {
@@ -156,14 +157,18 @@ form label {
 
 .signupText {
   text-align: center;
+  color: #aaa;
 }
 
 .signupText a {
-  color: yellow;
+  color: red;
+  font-weight: bold;
 }
 
 .icon {
-  font-size: 36px;
+  color: #c4c2c2;
+  font-size: 24px;
+  margin-top: 7px;
   width: 40px;
 }
 

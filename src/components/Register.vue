@@ -4,7 +4,10 @@
     <div v-if="status.loginFailed || error" class="errorBox">
       <p>{{ error || status.error.message }}</p>
     </div>
-    <h1>Sign up</h1>
+      <div class="title">
+        <h1>Budger</h1>
+        <small>See all your bills in one spot.</small>
+      </div>
     <form class="form" @submit.prevent="register" v-bind:class="{ formBorder: showBorder }">
       <label for="username">Username/email</label>
       <div class="inputGroup">
@@ -35,6 +38,7 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex';
+import { required, sameAs, minLength, maxLength } from 'vuelidate/lib/validators';
 
 export default {
   name: 'register',
@@ -44,7 +48,8 @@ export default {
       username: '',
       password: '',
       rePassword: '',
-      error: ''
+      error: '',
+      submitStatus: null
     }
   },
   computed: {
@@ -52,19 +57,37 @@ export default {
       status: 'authentication/getLoginStatus'
     })
   },
+  validations: {
+    username: {
+      required
+    },
+    password: {
+      required,
+      minLength: minLength(6),
+      maxLength: maxLength(255)
+    },
+    rePassword: {
+      required,
+      sameAsPassword: sameAs('password')
+    }
+  },
   mounted() {
     this.$store.dispatch('authentication/logout');
   },
   methods: {
     register: function() {
-      const { username, password, rePassword } = this;
-      if (password != rePassword) {
-        this.error = 'Passwords did not match.';
-      } else {
+      const { username, password } = this;
+      this.$v.$touch();
+      console.log(`Is it valid?  ${this.$v.$invalid}`);
+      return;
+      if (!this.$v.invalid) {
         this.$store.dispatch('authentication/register', { username, password });
+        this.password = '';
+        this.rePassword = '';
+      } else {
+        // switch case for setting this.error
+        this.error = 'Passwords did not match.';
       }
-      this.password = '';
-      this.rePassword = '';
     }
   }
 }
@@ -72,8 +95,7 @@ export default {
 <style scoped>
 .registerContainer {
   flex: 1;
-  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
-      url('/static/notebook-1280538_1920.jpg') no-repeat center;
+  background-color: #14213D;
   min-height: 100%;
 }
 .errorBox {
@@ -87,59 +109,65 @@ export default {
 }
 
 .register {
-  color: #c2c2c2;
-  margin-top: 10%;
+  color: #14213D;
+  margin: 90px auto auto auto;
   position: relative;
-  width: 31%;
+  width: 28%;
   min-width: 370px;
-  left: 10%;
-  border: 1px solid rgba(0,0,0,0);
+  border: 1px solid rgba(0, 0, 0, 0);
   padding: 0 35px;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: white;
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
   -moz-box-sizing: border-box;    /* Firefox, other Gecko */
   box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
-h1 {
+.title {
+  margin-bottom: 25px;
+  color: #14213D;
+}
+
+.title h1 {
   font-size: 2.5rem;
-  border-bottom: 1px solid #c2c2c2;
-  padding-bottom: 15px;
+  margin-bottom: 0px;
+}
+
+.title small {
+  font-size: 1.4rem;
 }
 
 .inputGroup {
   display: flex;
-  margin-bottom: 20px;
+  margin-bottom: 35px;
 }
 
 .inputGroup input {
   flex: 1;
-  margin-left: 10px;
+  margin-left: 5px;
+}
+
+.icon {
+  color: #c4c2c2;
+  font-size: 24px;
+  margin-top: 7px;
+  width: 40px;
 }
 
 .inputGroup button {
   flex: 1;
-  margin-left: 50px;
-}
-
-.icon {
-  font-size: 36px;
-  width: 40px;
-}
-
-.form button {
+  margin-left: 10px;
   height: 40px;
   text-transform: uppercase;
   font-size: 1rem;
-  background-color: rgba(0, 0, 0, 0);
-  color: #c2c2c2;
-  border: 2px solid #c2c2c2;
+  background-color: #26a67a;
+  color: white;
+  border: none;
   padding: 5px 15px;
 }
 
 .form button:hover {
   cursor: pointer;
-  transform: translateY(1px);
+  background-color: #2dc08d;
 }
 
 form label {
@@ -147,19 +175,15 @@ form label {
 }
 
 form input {
-  color: #fff;
   height: 40px;
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: #E5E5E5;
   border: none;
+  border-radius: 25px;
   font-size: 1rem;
   padding: 0 25px;
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
   -moz-box-sizing: border-box;    /* Firefox, other Gecko */
   box-sizing: border-box;         /* Opera/IE 8+ */
-}
-
-::placeholder {
-  color: white;
 }
 
 form label {
@@ -168,10 +192,13 @@ form label {
 
 .loginText {
   text-align: center;
+  color: #aaa;
 }
 
 .loginText a {
-  color: yellow;
+  /* color: #FCA311; */
+  color: red;
+  font-weight: bold;
 }
 
 @media (max-width: 600px) {

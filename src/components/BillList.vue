@@ -9,7 +9,7 @@
         </span>
       </p>
       <p class="topText newBillText" v-on:click="goToBillForm()">New Bill
-        <font-awesome-icon icon="hand-point-right" size="lg" />
+        <font-awesome-icon icon="hand-point-right" class="newBillIcon" size="lg" />
       </p>
       <table v-if="bills.length" class="table">
         <thead>
@@ -203,7 +203,7 @@ export default {
   flex: 1;
   width: 75%;
   margin: 0 auto 100px auto;
-  color: #171761;
+  color: white;
 }
 
 .bill-list h1 {
@@ -219,6 +219,7 @@ export default {
 .table {
   border-collapse: collapse;
   width: 100%;
+  color: #14213D;
   background-color: white;
   box-shadow: 1px 2px 8px #666;
 }
@@ -226,8 +227,7 @@ export default {
 .table thead tr {
   font-weight: bold;
   text-transform: uppercase;
-  background-color: #171761;
-  color: white;
+  background-color: #E5E5E5;
 }
 
 .table thead tr:hover {
@@ -274,6 +274,14 @@ export default {
 
 .newBillText {
   float: right;
+  color: white;
+  background-color: #14213D;
+  padding: 5px 20px;
+  border-radius: 10px;
+}
+
+.newBillIcon {
+  color: #FCA311;
 }
 
 @media (max-width: 600px) {

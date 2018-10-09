@@ -30,6 +30,13 @@ export default {
 </script>
 
 <style>
+/*
+ * darkblue #14213D
+ * orange #FCA311
+ * grey #E5E5E5
+ * white
+ * black
+**/
 html, body {
   margin: 0;
   padding: 0;
@@ -37,7 +44,7 @@ html, body {
 }
 
 body {
-  background-color: #c5e5f5;
+  background-color: #14213D;;
 }
 
 nav {
@@ -49,6 +56,7 @@ nav {
 
 a {
   text-decoration: none;
+  color: #FCA311;
 }
 
 #app {

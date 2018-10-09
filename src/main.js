@@ -4,6 +4,7 @@ import Vue from 'vue';
 import App from './App';
 import { router } from './router';
 import { store } from './store';
+import { Vuelidate } from 'vuelidate';
 import { MediaQueries } from 'vue-media-queries';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
@@ -25,6 +26,8 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 const mediaQueries = new MediaQueries();
 Vue.use(mediaQueries);
+
+Vue.use(Vuelidate);
 
 Vue.config.productionTip = false;
 
