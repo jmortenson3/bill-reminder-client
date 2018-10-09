@@ -8,6 +8,10 @@
       Go back
     </p>
     <form method="post" @submit.prevent="submitForm">
+    <p v-if="!$v.title.required" class="error">Title is required.</p>
+    <p v-if="!$v.title.maxLength" class="error">Title must be less than 250 characters.</p>
+    <p v-if="!$v.amount.between" class="error">Amount must be between 0 and 999999.</p>
+    <p v-if="!$v.payAtUrl.maxLength" class="error">PayAtUrl must be less than 4000 characters</p>
       <label for="title">Bill name</label>
       <input type="text" v-model="title" required id="title">
       <label for="amount">Amount</label>
@@ -33,12 +37,14 @@
 <script>
 import axios from 'axios';
 import { billService } from '../services/bill';
+import { required, maxLength, between } from 'vuelidate/lib/validators';
 
 export default {
   props: ['bill'],
   data() {
     console.log(JSON.stringify(this.bill));
     return {
+      error: null,
       title: this.bill ? this.bill.title : '',
       amount: this.bill ? this.bill.amount : '',
       payAtUrl: this.bill ? this.bill.payAtUrl : '',
@@ -56,8 +62,23 @@ export default {
       ],
     }
   },
+  validations: {
+    title: {
+      required,
+      maxLength: maxLength(250),
+    },
+    amount: {
+      between: between(0, 999999),
+    },
+    payAtUrl: {
+      maxLength: maxLength(4000),
+    }
+  },
   methods: {
     submitForm: function() {
+      if (this.$v.$invalid) {
+        return;
+      }
       const body = {
         title: this.title,
         amount: this.amount,
@@ -72,7 +93,7 @@ export default {
             this.goToBillList();
           })
           .catch(err => {
-            this.goToBillList();
+            this.error = 'Something went wrong!  Try again later.';
           });
       } else {
         billService.createBill(body)
@@ -80,7 +101,7 @@ export default {
             this.goToBillList();
           })
           .catch(err => {
-            this.goToBillList();
+            this.error = 'Something went wrong!  Try again later.';
           });
       }
     },
@@ -109,6 +130,9 @@ export default {
 </script>
 
 <style scoped>
+.error {
+  color: rgb(255, 53, 103);
+}
 .form {
   width: 40%;
   margin: 0 auto;
